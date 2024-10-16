@@ -12,7 +12,13 @@ export class UsersEntity extends BaseEntity {
   nickname: string;
 
   @Column()
+  role: number;
+
+  @Column()
   money: number;
+
+  @Column()
+  is_online: boolean;
 
   @Column()
   start_at?: string;
