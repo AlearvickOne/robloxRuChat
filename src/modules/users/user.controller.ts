@@ -44,9 +44,15 @@ export class UsersController {
     return res.json(money);
   }
 
-  @Get('all')
+  @Get('get-all-players')
   async getAllUsers(@Res() res: Response) {
     const users = await this.userService.getAllPlayers();
+    return res.json(users);
+  }
+
+  @Get('get-nickname-and-ten-money')
+  async getNicknameAndMoneyTenPlayers(@Res() res: Response) {
+    const users = await this.userService.getNicknameAndMoneyTenPlayers();
     return res.json(users);
   }
 

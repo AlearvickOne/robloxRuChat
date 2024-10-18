@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UsersEntity } from '../../database/entities/users.entity';
+import { dataSource } from '../../database/database.provider';
 
 @Injectable()
 export class UserService {
@@ -7,6 +8,11 @@ export class UserService {
 
   async saveNewPlayer(player_id: number, money: number, nickname: string) {
     const user = await UsersEntity.findOneBy({ player_id: player_id });
+
+    if (user.nickname !== nickname) {
+      user.nickname = nickname;
+      await user.save();
+    }
 
     if (user) {
       await this.saveStatusOnline(user.player_id, true);
@@ -49,5 +55,15 @@ export class UserService {
       { player_id: playerId },
       { is_online: status },
     );
+  }
+
+  async getNicknameAndMoneyTenPlayers() {
+    return await dataSource
+      .getRepository(UsersEntity)
+      .createQueryBuilder('users')
+      .select(['nickname', 'money'])
+      .orderBy('money', 'DESC')
+      .limit(10)
+      .getRawMany();
   }
 }
