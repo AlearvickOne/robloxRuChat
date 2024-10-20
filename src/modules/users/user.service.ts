@@ -9,7 +9,7 @@ export class UserService {
   async saveNewPlayer(player_id: number, money: number, nickname: string) {
     const user = await UsersEntity.findOneBy({ player_id: player_id });
 
-    if (user.nickname !== nickname) {
+    if (user?.nickname !== nickname) {
       user.nickname = nickname;
       await user.save();
     }
@@ -34,11 +34,21 @@ export class UserService {
 
   async getPlayerMoney(player_id: number) {
     const user = await UsersEntity.findOneBy({ player_id: player_id });
+
+    if (!user) {
+      return;
+    }
+
     return user.money;
   }
 
   async updatePlayerMoneyFromShop(player_id: number, price: number) {
     const user = await UsersEntity.findOneBy({ player_id: player_id });
+
+    if (!user) {
+      return;
+    }
+
     user.money -= price;
     await user.save();
     return true;
