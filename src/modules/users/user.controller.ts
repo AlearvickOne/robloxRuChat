@@ -74,4 +74,27 @@ export class UsersController {
     const money = await this.userService.getMoneyToPlayers();
     return res.json(money);
   }
+
+  // Метод который снимает деньги у игрока после покупки в магазине
+  @Post('update-player-money-from-shop')
+  async updatePlayerMoneyFromShop(
+    @Req() req: Request,
+    @Body() body: any,
+    @Res() res: Response,
+  ) {
+    const player_id = Number(req.query?.player_id?.toString());
+    const price = Number(body.price?.toString());
+    console.log(body.money);
+
+    if (!player_id || !price) {
+      throw new HttpException('Отсутствует player_id или money', 400);
+    }
+
+    const updatedMoney = await this.userService.updatePlayerMoneyFromShop(
+      player_id,
+      price,
+    );
+
+    return res.json(updatedMoney);
+  }
 }

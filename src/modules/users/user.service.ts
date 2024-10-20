@@ -37,6 +37,13 @@ export class UserService {
     return user.money;
   }
 
+  async updatePlayerMoneyFromShop(player_id: number, price: number) {
+    const user = await UsersEntity.findOneBy({ player_id: player_id });
+    user.money -= price;
+    await user.save();
+    return true;
+  }
+
   async getMoneyToPlayers() {
     const users = await UsersEntity.findBy({
       is_online: true,
