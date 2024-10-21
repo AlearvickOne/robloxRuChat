@@ -20,7 +20,7 @@ export class UsersController {
     const money = Number(data?.money?.toString()) ?? 0;
     const nickname = data?.nickname?.toString();
 
-    if (!player_id || !nickname) {
+    if (!player_id || player_id < 0 || !nickname) {
       throw new HttpException('Данные не получены', 400);
     }
 
