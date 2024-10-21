@@ -18,11 +18,6 @@ export class UserService {
       await newUserEntity.save();
     }
 
-    if (user?.nickname !== nickname && nickname) {
-      user.nickname = nickname;
-      await user.save();
-    }
-
     await this.saveStatusOnline(user.player_id, true);
     return await this.getPlayerMoney(user.player_id);
   }
