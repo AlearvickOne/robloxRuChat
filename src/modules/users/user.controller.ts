@@ -24,7 +24,6 @@ export class UsersController {
       throw new HttpException('Данные не получены', 400);
     }
 
-    console.log(player_id, nickname);
     const moneyPlayer = await this.userService.saveNewPlayer(
       player_id,
       money,
