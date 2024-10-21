@@ -84,7 +84,6 @@ export class UsersController {
   ) {
     const player_id = Number(req.query?.player_id?.toString());
     const price = Number(body.price?.toString());
-    console.log(body.money);
 
     if (!player_id || !price) {
       throw new HttpException('Отсутствует player_id или money', 400);

@@ -9,23 +9,22 @@ export class UserService {
   async saveNewPlayer(player_id: number, money: number, nickname: string) {
     const user = await UsersEntity.findOneBy({ player_id: player_id });
 
-    if (user?.nickname !== nickname) {
+    if (!user) {
+      const newUserEntity = new UsersEntity();
+      newUserEntity.player_id = player_id;
+      newUserEntity.nickname = nickname;
+      newUserEntity.money = money;
+      newUserEntity.is_online = true;
+      await newUserEntity.save();
+    }
+
+    if (user?.nickname !== nickname && nickname) {
       user.nickname = nickname;
       await user.save();
     }
 
-    if (user) {
-      await this.saveStatusOnline(user.player_id, true);
-      return await this.getPlayerMoney(user.player_id);
-    }
-
-    const newUserEntity = new UsersEntity();
-    newUserEntity.player_id = player_id;
-    newUserEntity.nickname = nickname;
-    newUserEntity.money = money;
-    newUserEntity.is_online = true;
-    await newUserEntity.save();
-    return 0;
+    await this.saveStatusOnline(user.player_id, true);
+    return await this.getPlayerMoney(user.player_id);
   }
 
   async getAllPlayers() {
